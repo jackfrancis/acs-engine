@@ -84,6 +84,15 @@ func (cli *CLIProvisioner) provision() error {
 		cli.Config.Name = cli.Config.SoakClusterName
 	}
 	os.Setenv("NAME", cli.Config.Name)
+	f, err := os.Create("./resource-group.txt")
+	if err != nil {
+		log.Printf("Unable to create resource group file to disk: %s\n", err)
+	} else {
+		_, err := f.WriteString(cli.Config.Name)
+		if err != nil {
+			log.Printf("Unable to save resource group name to disk: %s\n", err)
+		}
+	}
 
 	outputPath := filepath.Join(cli.Config.CurrentWorkingDir, "_output")
 	os.Mkdir(outputPath, 0755)
