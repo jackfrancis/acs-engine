@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/acs-engine/test/e2e/azure"
 	"github.com/Azure/acs-engine/test/e2e/config"
 	"github.com/Azure/acs-engine/test/e2e/engine"
-	"github.com/Azure/acs-engine/test/e2e/kubernetes/node"
 )
 
 var (
@@ -45,30 +44,8 @@ func main() {
 	// If an interrupt/kill signal is sent we will run the clean up procedure
 	trap()
 
-	// Only provision a cluster if there isnt a name present
-	if cfg.Name == "" {
-		for i := 1; i <= cfg.ProvisionRetries; i++ {
-			success := provisionCluster()
-			if success {
-				break
-			} else if i == cfg.ProvisionRetries {
-				log.Fatalf("Exceeded Provision retry count!")
-			}
-		}
-	}
+	_ = provisionCluster()
 
-	if cfg.Orchestrator == kubernetesOrchestrator {
-		os.Setenv("KUBECONFIG", cfg.GetKubeConfig())
-		log.Printf("Kubeconfig:%s\n", cfg.GetKubeConfig())
-		log.Println("Waiting on nodes to go into ready state...")
-		ready := node.WaitOnReady(eng.NodeCount(), 10*time.Second, 10*time.Minute)
-		if ready == false {
-			teardown()
-			log.Fatalf("Error: Not all nodes in ready state!")
-		}
-	}
-
-	runGinkgo(cfg.Orchestrator)
 	teardown()
 	log.Printf("Total Testing Elapsed Time:%s\n", time.Since(start))
 }
