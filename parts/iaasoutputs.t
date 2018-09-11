@@ -2,6 +2,7 @@
         "type": "string",
         "value": "[variables('resourceGroup')]"
     },
+    # all of these values should be computed pre-template runtime
     "vnetResourceGroup": {
         "type": "string",
         "value": "[variables('virtualNetworkResourceGroupName')]"
