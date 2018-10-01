@@ -727,7 +727,7 @@ func TestIsAzureCNINetworkmonitorAddon(t *testing.T) {
 // TestSetVMSSDefaultsAndZones covers tests for setVMSSDefaultsForAgents and masters
 func TestSetVMSSDefaultsAndZones(t *testing.T) {
 	// masters with vmss and no zones
-	mockCS := getMockBaseContainerService("1.12.0-beta.0")
+	mockCS := getMockBaseContainerService("1.12.0")
 	properties := mockCS.Properties
 	properties.OrchestratorProfile.OrchestratorType = "Kubernetes"
 	properties.MasterProfile.AvailabilityProfile = api.VirtualMachineScaleSets
@@ -741,7 +741,7 @@ func TestSetVMSSDefaultsAndZones(t *testing.T) {
 			properties.OrchestratorProfile.KubernetesConfig.LoadBalancerSku, api.DefaultLoadBalancerSku)
 	}
 	// masters with vmss and zones
-	mockCS = getMockBaseContainerService("1.12.0-beta.0")
+	mockCS = getMockBaseContainerService("1.12.0")
 	properties = mockCS.Properties
 	properties.OrchestratorProfile.OrchestratorType = "Kubernetes"
 	properties.MasterProfile.AvailabilityProfile = api.VirtualMachineScaleSets
@@ -764,7 +764,7 @@ func TestSetVMSSDefaultsAndZones(t *testing.T) {
 			*properties.OrchestratorProfile.KubernetesConfig.ExcludeMasterFromStandardLB, api.DefaultExcludeMasterFromStandardLB)
 	}
 	// agents with vmss and no zones
-	mockCS = getMockBaseContainerService("1.12.0-beta.0")
+	mockCS = getMockBaseContainerService("1.12.0")
 	properties = mockCS.Properties
 	properties.OrchestratorProfile.OrchestratorType = "Kubernetes"
 	properties.AgentPoolProfiles[0].Count = 4
@@ -778,7 +778,7 @@ func TestSetVMSSDefaultsAndZones(t *testing.T) {
 			properties.OrchestratorProfile.KubernetesConfig.LoadBalancerSku, api.DefaultLoadBalancerSku)
 	}
 	// agents with vmss and zones
-	mockCS = getMockBaseContainerService("1.12.0-beta.0")
+	mockCS = getMockBaseContainerService("1.12.0")
 	properties = mockCS.Properties
 	properties.OrchestratorProfile.OrchestratorType = "Kubernetes"
 	properties.AgentPoolProfiles[0].Count = 4
