@@ -39,6 +39,7 @@ set -x
 (( expirationInSecs = ${EXPIRATION_IN_HOURS} * 60 * 60 ))
 # deadline = the "date +%s" representation of the oldest age we're willing to keep
 (( deadline=$(date +%s)-${expirationInSecs%.*} ))
+echo $deadline
 # find resource groups created before our deadline
 echo "Looking for resource groups created over ${EXPIRATION_IN_HOURS} hours ago..."
 for resourceGroup in `az group list | jq --arg dl $deadline '.[] | select(.name | contains("acse-test") | not) | select(.tags.now < $dl).name' | tr -d '\"' || ""`; do
