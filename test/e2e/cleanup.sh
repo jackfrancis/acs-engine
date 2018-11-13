@@ -34,13 +34,13 @@ az login --service-principal \
 # set to the sub id we want to cleanup
 az account set -s $SUBSCRIPTION_ID_TO_CLEANUP
 
+set -x
 # convert to seconds so we can compare it against the "tags.now" property in the resource group metadata
 (( expirationInSecs = ${EXPIRATION_IN_HOURS} * 60 * 60 ))
 # deadline = the "date +%s" representation of the oldest age we're willing to keep
 (( deadline=$(date +%s)-${expirationInSecs%.*} ))
 # find resource groups created before our deadline
 echo "Looking for resource groups created over ${EXPIRATION_IN_HOURS} hours ago..."
-set -x
 for resourceGroup in `az group list | jq --arg dl $deadline '.[] | select(.name | contains("acse-test") | not) | select(.tags.now < $dl).name' | tr -d '\"' || ""`; do
     for deployment in `az group deployment list -g $resourceGroup | jq '.[] | .name' | tr -d '\"' || ""`; do
         echo "Will delete deployment ${deployment} from resource group ${resourceGroup}..."
